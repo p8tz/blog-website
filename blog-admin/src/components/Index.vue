@@ -4,12 +4,10 @@
       <a-layout>
         <!-- header -->
         <a-layout-header :style="{ background: '#fcfcfc' }">
-
           <!-- username -->
           <span style="position: absolute; left: 20%; font-size: 17px">
             <h1> Hi!&nbsp;{{ username }}</h1>
           </span>
-
           <a-menu v-model="current" mode="horizontal" style="background-color: #fcfcfc">
             <!-- 各个分类 -->
             <a-menu-item v-bind:key="item.key" v-for="item in menuItems">
@@ -18,22 +16,19 @@
                 {{ item.key }}
               </router-link>
             </a-menu-item>
-
             <!-- 退出 -->
             <a-menu-item key="logout" @click="logout">
               <a-icon type="logout"/>
-              <router-link to="/logout" style="float: right">
+              <router-link to="/admin/logout" style="float: right">
                 Logout
               </router-link>
             </a-menu-item>
           </a-menu>
         </a-layout-header>
-
         <!-- main -->
         <a-layout-content style="height: 797px;background-color: #fcfcfc">
           <router-view></router-view>
         </a-layout-content>
-
         <!-- footer -->
         <a-layout-footer style="background-color: #fcfcfc">
           <a-row style="text-align: center">
@@ -44,7 +39,7 @@
                 <a-icon type="user"/>
                 极夜
                 <p style="font-weight: bold;margin-top: 5px">
-                  Designed by 小N
+                  Designed by Polarnight
                 </p>
               </div>
             </a-col>
@@ -64,22 +59,22 @@ export default {
         {
           key: 'home',
           type: 'home',
-          to: '/home'
+          to: '/admin/home'
         },
         {
-          key: 'blog',
+          key: 'article',
           type: 'book',
-          to: '/blog'
+          to: '/admin/article'
         },
         {
           key: 'type',
           type: 'folder',
-          to: '/type'
+          to: '/admin/type'
         },
         {
           key: 'tag',
           type: 'tags',
-          to: '/tag'
+          to: '/admin/tag'
         }
       ],
       username: 'Polarnight'
@@ -88,7 +83,7 @@ export default {
   methods: {
     logout: function () {
       window.sessionStorage.removeItem('token')
-      this.$router.push('/login')
+      this.$router.push('/admin/login')
     }
   }
 }
@@ -99,32 +94,8 @@ export default {
   position: absolute;
   right: 20%;
 }
+
 .a-layout-content {
   height: 800px;
 }
 </style>
-
-<!--      <a-menu-item key="home">-->
-<!--        <a-icon type="home"/>-->
-<!--        <router-link to="/home" style="float: right">-->
-<!--          Home-->
-<!--        </router-link>-->
-<!--      </a-menu-item>-->
-<!--      <a-menu-item key="blog">-->
-<!--        <a-icon type="book"/>-->
-<!--        <router-link to="/blog" style="float: right">-->
-<!--          Blog-->
-<!--        </router-link>-->
-<!--      </a-menu-item>-->
-<!--      <a-menu-item key="type">-->
-<!--        <a-icon type="folder"/>-->
-<!--        <router-link to="/type" style="float: right">-->
-<!--          Type-->
-<!--        </router-link>-->
-<!--      </a-menu-item>-->
-<!--      <a-menu-item key="tag">-->
-<!--        <a-icon type="tags"/>-->
-<!--        <router-link to="/tag" style="float: right">-->
-<!--          Tag-->
-<!--        </router-link>-->
-<!--      </a-menu-item>-->

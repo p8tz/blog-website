@@ -43,10 +43,6 @@
 </template>
 
 <script>
-// test jquery
-// $(document).ready(function () {
-//   console.log(123)
-// })
 export default {
   name: 'Login',
   data () {
@@ -90,27 +86,20 @@ export default {
         if (err) {
           return
         }
-        console.log('Received values of form: ', values)
 
-        // TODO
-        // axios 发送get请求验证用户信息
-        this.$http.get('https://jsonplaceholder.typicode.com/users')
+        this.$http.post('/admin/login', {
+          'username': this.form.getFieldValue('username'),
+          'password': this.form.getFieldValue('password')
+        })
           .then(response => {
-            console.log('Received values of database: ', response)
+            if (response.data.status === 200) {
+              window.sessionStorage.setItem('token', response.data.token)
+              this.$router.push('/admin/index')
+              this.$message.success('Login Successfully', 1)
+            } else {
+              this.$message.error('Incorrect Username or Password !', 1)
+            }
           })
-          .catch(error => {
-            console.log(error)
-          })
-
-        // 假信息
-        if (values.username === 'polarnight' && values.password === '123456') {
-          this.$message.success('Login Successfully', 1)
-          // 假token
-          window.sessionStorage.setItem('token', 'a fake token')
-          this.$router.push('/home')
-        } else {
-          this.$message.error('Incorrect Username or Password !', 1)
-        }
       })
     },
     reset () {

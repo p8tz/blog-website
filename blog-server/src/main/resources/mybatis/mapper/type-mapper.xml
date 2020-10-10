@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.p8t.blog.mapper.TypeMapper">
+    <select id="findByUserId" resultType="cc.p8t.blog.entity.Type">
+        select id, typename, user_id
+        from type
+        where user_id = #{userId}
+    </select>
+
+
+    <select id="findById" resultType="cc.p8t.blog.entity.Type">
+        select id, typename, user_id
+        from type
+        where id = #{typeId}
+    </select>
+
+    <insert id="insertType">
+        insert into type(typename, user_id)
+        values (#{type.typename}, #{type.user.id})
+    </insert>
+
+    <delete id="deleteById">
+        delete
+        from type
+        where id = #{typeId}
+    </delete>
+
+    <update id="updateById">
+        update type
+        set typename = #{type.typename}
+        where id = #{type.id}
+    </update>
+</mapper>

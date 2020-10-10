@@ -17,7 +17,8 @@ import {
   Tag,
   Modal,
   Tooltip,
-  Select
+  Select,
+  Popconfirm
 } from 'ant-design-vue'
 
 // Vue.component(LocaleProvider.name, LocaleProvider)
@@ -40,6 +41,7 @@ Vue.use(Divider)
 Vue.use(Tag)
 Vue.use(Tooltip)
 Vue.use(Select)
+Vue.use(Popconfirm)
 
 Vue.prototype.$message = message
 Vue.prototype.$confirm = Modal.confirm

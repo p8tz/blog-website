@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- 开启驼峰和下划线命名自动转换 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+        <!-- 别名，在没有注解【@Alias("student")】的情况下，
+			 会使用 Bean 的首字母小写的非限定类名来作为它的别名 -->
+        <package name="cc.p8t.blog.entity"/>
+    </typeAliases>
+</configuration>

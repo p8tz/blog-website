@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.p8t.blog.mapper.TagMapper">
+    <select id="findByUserId" resultType="cc.p8t.blog.entity.Tag">
+        select id, tagname, user_id
+        from tag
+        where user_id = #{userId}
+    </select>
+
+    <select id="findById" resultType="cc.p8t.blog.entity.Tag">
+        select id, tagname, user_id
+        from tag
+        where id = #{tagId}
+    </select>
+
+    <insert id="insertTag">
+        insert into tag(tagname, user_id)
+        values (#{tag.tagname}, #{tag.user.id})
+    </insert>
+
+    <delete id="deleteById">
+        delete
+        from tag
+        where id = #{tagId}
+    </delete>
+
+    <update id="updateById">
+        update tag
+        set tagname = #{tag.tagname}
+        where id = #{tag.id}
+    </update>
+</mapper>

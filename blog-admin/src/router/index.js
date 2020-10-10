@@ -3,11 +3,13 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login'
 import Index from '../components/Index'
 import Home from '../components/Home'
-import Blog from '../components/Blog'
+import Article from '../components/Article'
 import Type from '../components/Type'
 import Tag from '../components/Tag'
 import Logout from '../components/Logout'
-import EditBlog from '../components/EditBlog'
+import EditArticle from '../components/EditArticle'
+import PutType from '../components/PutType'
+import PutTag from '../components/PutTag'
 
 Vue.use(VueRouter)
 
@@ -17,43 +19,56 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/admin/login'
     },
     {
-      path: '/login',
+      path: '/admin/login',
       component: Login
     },
     {
-      path: '/index',
+      path: '/admin/index',
       component: Index,
-      redirect: '/home',
+      redirect: '/admin/home',
       children: [
         {
-          path: '/home',
+          path: '/admin/home',
           component: Home
         },
         {
-          path: '/blog',
-          component: Blog
+          path: '/admin/article',
+          component: Article
         },
         {
-          path: '/type',
+          path: '/admin/type',
           component: Type
         },
         {
-          path: '/tag',
+          path: '/admin/tag',
           component: Tag
         },
         {
-          path: '/logout',
+          path: '/admin/logout',
           component: Logout
         },
         {
-          path: '/blog/:id',
-          component: EditBlog
+          path: '/admin/article/:id',
+          component: EditArticle
+        },
+        {
+          path: '/admin/type/:id',
+          component: PutType
+        }
+        ,
+        {
+          path: '/admin/tag/:id',
+          component: PutTag
         }
       ]
-    }
+    },
+    {
+      path: '*',
+      redirect: '/admin/login'
+    },
   ]
 })
 // 挂载路由导航守卫
@@ -63,12 +78,12 @@ const router = new VueRouter({
 //      两种方式   next() 放行    next('/login') 强制跳转
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login') {
+  if (to.path === '/admin/login') {
     return next()
   }
   const token = window.sessionStorage.getItem('token')
   if (!token) {
-    return next('/login')
+    return next('/admin/login')
   }
   next()
 })

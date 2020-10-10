@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.p8t.blog.mapper.UserMapper">
+    <select id="findByUsernameAndPassword" resultType="cc.p8t.blog.entity.User">
+        select id, username, password
+        from user
+        where username = #{user.username}
+          and password = #{user.password}
+    </select>
+    <select id="findById" resultType="cc.p8t.blog.entity.User">
+        select id, username, password
+        from user
+        where id = #{id}
+    </select>
+</mapper>

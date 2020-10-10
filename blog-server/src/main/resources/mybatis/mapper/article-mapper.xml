@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.p8t.blog.mapper.ArticleMapper">
+
+    <resultMap id="findByUserIdMap" type="cc.p8t.blog.entity.Article">
+        <id column="article_id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <association property="type" javaType="cc.p8t.blog.entity.Type">
+            <result column="typename" property="typename"/>
+        </association>
+    </resultMap>
+
+    <select id="findByUserId" resultMap="findByUserIdMap">
+        select article.id as article_id,
+               title,
+               content,
+               create_time,
+               update_time,
+               article.user_id,
+               typename
+        from article,
+             type,
+             fk_article_tag,
+             tag
+        where article.user_id = #{userId}
+          and article.type_id = type.id
+          and article_id = fk_article_tag.article_id
+          and fk_article_tag.tag_id = tag.id
+    </select>
+
+    <resultMap id="findByIdMap" type="cc.p8t.blog.entity.Article">
+        <id column="article_id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <association property="type" javaType="cc.p8t.blog.entity.Type">
+            <id column="type_id" property="id"/>
+            <result column="typename" property="typename"/>
+        </association>
+        <collection property="tags" ofType="cc.p8t.blog.entity.Tag">
+            <id column="tag_id" property="id"/>
+            <result column="tagname" property="tagname"/>
+        </collection>
+    </resultMap>
+
+    <select id="findById" resultMap="findByIdMap">
+        select article.id as article_id,
+               title,
+               content,
+               create_time,
+               update_time,
+               type.id    as type_id,
+               typename,
+               tag.id     as tag_id,
+               tagname
+        from article
+                 left join type on article.type_id = type.id
+                 left join fk_article_tag on article.id = fk_article_tag.article_id
+                 left join tag on fk_article_tag.tag_id = tag.id
+        where article_id = #{articleId}
+    </select>
+
+    <insert id="insertArticle" useGeneratedKeys="true" keyProperty="id" parameterType="cc.p8t.blog.entity.Article">
+        insert into article(title, content, create_time, type_id, user_id)
+            value (#{article.title},
+                   #{article.content},
+                   #{article.createTime},
+                   #{article.type.id},
+                   #{article.user.id})
+    </insert>
+
+    <insert id="establishForeignKeyAssociation">
+        insert into fk_article_tag(article_id, tag_id)
+            value (#{articleId}, #{tagId})
+    </insert>
+
+    <update id="updateArticle">
+        update article
+        set title       = #{article.title},
+            content     = #{article.content},
+            update_time = #{article.updateTime},
+            type_id     = #{article.type.id}
+        where id = #{article.id}
+    </update>
+
+    <delete id="removeForeignKeyAssociation">
+        delete
+        from fk_article_tag
+        where article_id = #{articleId}
+    </delete>
+
+    <delete id="deleteById">
+        delete
+        from article
+        where id = #{articleId}
+    </delete>
+
+</mapper>
