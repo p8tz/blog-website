@@ -18,7 +18,7 @@
         <div class="tat">
           <!-- 分类 -->
           <span class="type">
-              <a-select placeholder="Please select" style="width: 100%" v-model="typeId" @change="typeChange">
+              <a-select placeholder="Please select" style="width: 100%" v-model="typeId">
                 <a-select-option :value="type.id" v-for="(type, key) in types" :key="type.id">
                   {{ type.typename }}
                 </a-select-option>
@@ -27,7 +27,7 @@
           <!-- 标签 -->
           <span class="tag">
               <a-select mode="multiple" style="width: 100%" placeholder="Please select"
-                        v-model="tagIds" @change="tagChange">
+                        v-model="tagIds">
                 <a-select-option :value="tag.id" v-for="(tag, key) in tags" :key="tag.id">
                   {{ tag.tagname }}
                 </a-select-option>

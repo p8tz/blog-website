@@ -33,7 +33,7 @@ public class ArticleController {
     public Map<String, Object> getArticlesByUserId(HttpServletRequest request) {
         String token = request.getHeader("token");
         List<Article> articles = articleService.findByUserId(JWTUtil.getUserId(token));
-        return Map.of("articles", articles);
+        return Map.of("articles", articles, "status", 200);
     }
 
     @PostMapping("/article")
@@ -47,7 +47,7 @@ public class ArticleController {
     @GetMapping("/article/{id}")
     public Map<String, Object> findArticleById(@PathVariable("id") Integer articleId) {
         Article article = articleService.findById(articleId);
-        return Map.of("article", article);
+        return Map.of("article", article, "status", 200);
     }
 
     @PutMapping("/article/{id}")

@@ -21,7 +21,6 @@ public class CorsFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse res = (HttpServletResponse) response;
 
-        // 这啥玩意
         /*
          * The Access-Control-Allow-Credentials header Indicates whether
          * or not the response to the request can be exposed when the
@@ -37,7 +36,7 @@ public class CorsFilter implements Filter {
         res.addHeader("Access-Control-Allow-Credentials", "true");
 
         // 允许跨域的[protocol:ip:port]
-        res.addHeader("Access-Control-Allow-Origin", "http://localhost:9999");
+        res.addHeader("Access-Control-Allow-Origin", "http://localhost:9998");
         // 允许跨域请求方式
         res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
         // 允许请求头包含的字段, 其中token字段是用来做JWT验证的

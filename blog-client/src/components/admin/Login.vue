@@ -3,7 +3,7 @@
     <div class="login_box">
       <!--    头像    -->
       <div class="avatar_box">
-        <img src="../assets/logo.png" alt="">
+        <img src="../../assets/logo.png" alt="">
       </div>
       <!--    表单    -->
       <a-form :form="form" :label-col="{ span: 7 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit"

@@ -15,7 +15,6 @@ Vue.use(VueQuillEditor) //, /* { default global options } */
 axios.defaults.baseURL = 'http://localhost:8888'
 // 请求拦截器, 每个请求之前携带token认证
 axios.interceptors.request.use(config => {
-  // console.log(config)
   config.headers.token = window.sessionStorage.getItem('token')
   return config
 }, error => {
