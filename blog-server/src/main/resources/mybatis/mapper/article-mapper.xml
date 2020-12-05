@@ -66,6 +66,41 @@
         where article_id = #{articleId}
     </select>
 
+    <select id="findByTypeId" resultMap="findByIdMap">
+        select article.id as article_id,
+               title,
+               content,
+               create_time,
+               update_time,
+               type.id    as type_id,
+               typename,
+               tag.id     as tag_id,
+               tagname
+        from article
+                 left join type on article.type_id = type.id
+                 left join fk_article_tag on article.id = fk_article_tag.article_id
+                 left join tag on fk_article_tag.tag_id = tag.id
+        where article.type_id = #{typeId}
+    </select>
+
+    <select id="findByTagId" resultMap="findByIdMap">
+        select article.id as article_id,
+               title,
+               content,
+               create_time,
+               update_time,
+               type.id    as type_id,
+               typename,
+               tag.id     as tag_id,
+               tagname
+        from article
+                 left join type on article.type_id = type.id
+                 left join fk_article_tag on article.id = fk_article_tag.article_id
+                 left join tag on fk_article_tag.tag_id = tag.id
+        where tag_id = #{tagId}
+    </select>
+
+
     <insert id="insertArticle" useGeneratedKeys="true" keyProperty="id" parameterType="cc.p8t.blog.entity.Article">
         insert into article(title, content, create_time, type_id, user_id)
             value (#{article.title},

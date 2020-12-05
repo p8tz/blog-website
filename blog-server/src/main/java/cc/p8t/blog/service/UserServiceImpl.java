@@ -6,6 +6,8 @@ import cc.p8t.blog.utils.SHA256Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author jljxvg@foxmail.com
  * @date 2020/9/27 14:54
@@ -20,5 +22,10 @@ public class UserServiceImpl implements UserService {
     public User checkUser(User user) {
         user.setPassword(SHA256Util.getDigest(user.getPassword()));
         return userMapper.findByUsernameAndPassword(user);
+    }
+
+    @Override
+    public List<User> findUserList() {
+        return userMapper.findUserList();
     }
 }

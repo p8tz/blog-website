@@ -12,6 +12,12 @@ import AdminPutType from '../components/admin/PutType'
 import AdminPutTag from '../components/admin/PutTag'
 
 import ShowIndex from '../components/show/Index'
+import ShowArticleOV from '../components/show/ArticleOV'
+import ShowArticle from '../components/show/Article'
+import ShowTypeOV from '../components/show/TypeOV'
+import ShowTagOV from '../components/show/TagOV'
+import ShowTypeArticle from '../components/show/TypeArticle'
+import ShowTagArticle from '../components/show/TagArticle'
 
 Vue.use(VueRouter)
 
@@ -27,10 +33,30 @@ const router = new VueRouter({
       path: '/index',
       component: ShowIndex,
     },
-
-
-
-
+    {
+      path: '/user/:id',  // /user/:id/articles在这显示
+      component: ShowArticleOV,
+    },
+    {
+      path: '/user/:id/types',
+      component: ShowTypeOV
+    },
+    {
+      path: '/user/:id/tags',
+      component: ShowTagOV
+    },
+    {
+      path: '/user/:id/type/:typeId',
+      component: ShowTypeArticle
+    },
+    {
+      path: '/user/:id/tag/:tagId',
+      component: ShowTagArticle
+    },
+    {
+      path: '/user/:id/article/:articleId',
+      component: ShowArticle,
+    },
     {
       path: '/admin/login',
       component: AdminLogin

@@ -28,4 +28,8 @@ public interface ArticleMapper {
     Article findById(@Param("articleId") Integer articleId);
 
     int deleteById(@Param("articleId") Integer articleId);
+
+    List<Article> findByTypeId(@Param("typeId") Integer typeId);
+
+    List<Article> findByTagId(@Param("tagId") Integer tagId);
 }

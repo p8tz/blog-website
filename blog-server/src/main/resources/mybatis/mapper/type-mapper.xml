@@ -9,7 +9,6 @@
         where user_id = #{userId}
     </select>
 
-
     <select id="findById" resultType="cc.p8t.blog.entity.Type">
         select id, typename, user_id
         from type

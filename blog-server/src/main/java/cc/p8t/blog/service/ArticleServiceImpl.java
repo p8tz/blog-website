@@ -7,8 +7,10 @@ import org.apache.juli.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,6 +19,7 @@ import java.util.List;
  */
 @Service
 public class ArticleServiceImpl implements ArticleService {
+
     @Autowired
     private ArticleMapper articleMapper;
 
@@ -56,5 +59,15 @@ public class ArticleServiceImpl implements ArticleService {
     public int deleteById(Integer articleId) {
         articleMapper.removeForeignKeyAssociation(articleId);
         return articleMapper.deleteById(articleId);
+    }
+
+    @Override
+    public List<Article> findByTypeId(Integer typeId) {
+        return articleMapper.findByTypeId(typeId);
+    }
+
+    @Override
+    public List<Article> findByTagId(Integer tagId) {
+        return articleMapper.findByTagId(tagId);
     }
 }

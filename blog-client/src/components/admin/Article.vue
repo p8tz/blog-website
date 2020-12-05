@@ -6,7 +6,6 @@
         <span slot="action" slot-scope="text, record">
           <!-- 传入id值 -->
           <router-link :to="'/admin/article/'+record.id">编辑</router-link>
-
           <a-divider type="vertical"/>
           <a @click="del(record)">删除</a>
         </span>

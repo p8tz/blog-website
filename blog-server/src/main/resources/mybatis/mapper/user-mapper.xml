@@ -14,4 +14,8 @@
         from user
         where id = #{id}
     </select>
+    <select id="findUserList" resultType="cc.p8t.blog.entity.User">
+        select id, username
+        from user
+    </select>
 </mapper>

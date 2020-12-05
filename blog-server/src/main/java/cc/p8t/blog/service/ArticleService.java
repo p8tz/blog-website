@@ -18,4 +18,8 @@ public interface ArticleService {
     Article findById(Integer articleId);
 
     int deleteById(Integer articleId);
+
+    List<Article> findByTypeId(Integer typeId);
+
+    List<Article> findByTagId(Integer tagId);
 }
