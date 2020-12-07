@@ -3,17 +3,16 @@ package cc.p8t.blog.utils;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-public class CustomSHA256Util {
-    /**
-     * 1. bit填充使满足   bit数 mode 512 == 448   然后再加原信息长度的64位表示形式得到n个512bits块
-     * ____填充方式: 原信息末尾 加 1 再加若干个 0
-     * ____________若原信息已满足对 512 模 448 则填充 512 bits
-     * 2. 取第一个512bits块, 分割为 16 * 32bits  其中32bits可视为 unsigned int(后面加法均为mod 2的32次幂的加法)
-     * ____通过公式计算得到第17~64个unsigned int
-     * ________对这64个unsigned int 进行64次循环: 除了第一次, 每次循环更新一次8个hash
-     * ____________对后续512bits块采取相同操作, 最后将得到的8个hash拼接即得256位hash值
-     */
-
+/**
+ * 1. bit填充使满足   bit数 mode 512 == 448   然后再加原信息长度的64位表示形式得到n个512bits块
+ * ____填充方式: 原信息末尾 加 1 再加若干个 0
+ * ____________若原信息已满足对 512 模 448 则填充 512 bits
+ * 2. 取第一个512bits块, 分割为 16 * 32bits  其中32bits可视为 unsigned int(后面加法均为mod 2的32次幂的加法)
+ * ____通过公式计算得到第17~64个unsigned int
+ * ________对这64个unsigned int 进行64次循环: 除了第一次, 每次循环更新一次8个hash
+ * ____________对后续512bits块采取相同操作, 最后将得到的8个hash拼接即得256位hash值
+ */
+public class MySHA256Util {
     /**
      * Initialize hash values:
      * (first 32 bits of the fractional parts of the roots of the first 8 primes)
@@ -55,14 +54,14 @@ public class CustomSHA256Util {
             System.arraycopy(words, 16 * i, W, 0, 16);
             // 计算 W[16] ~ W[63]
             for (int j = 16; j < 64; ++j) {
-                W[j] = W[j - 16] + W[j - 7] + gets0(W[j - 15]) + gets1(W[j - 2]);
+                W[j] = W[j - 16] + W[j - 7] + s0(W[j - 15]) + s1(W[j - 2]);
             }
             // 将8个要用的hash copy一份
             System.arraycopy(hash, 0, temp, 0, hash.length);
             // 对8个hash值进行64轮压缩
             for (int j = 0; j < 64; ++j) {
-                int t1 = temp[7] + getS1(temp[4]) + getch(temp[4], temp[5], temp[6]) + K[j] + W[j];
-                int t2 = getS0(temp[0]) + getmaj(temp[0], temp[1], temp[2]);
+                int t1 = temp[7] + S1(temp[4]) + ch(temp[4], temp[5], temp[6]) + K[j] + W[j];
+                int t2 = S0(temp[0]) + maj(temp[0], temp[1], temp[2]);
                 // 压缩
                 System.arraycopy(temp, 0, temp, 1, temp.length - 1);
                 temp[0] = t1 + t2;
@@ -138,27 +137,27 @@ public class CustomSHA256Util {
         return bb.array();
     }
 
-    private static int gets0(int x) {
+    private static int s0(int x) {
         return Integer.rotateRight(x, 7) ^ Integer.rotateRight(x, 18) ^ (x >>> 3);
     }
 
-    private static int gets1(int x) {
+    private static int s1(int x) {
         return Integer.rotateRight(x, 17) ^ Integer.rotateRight(x, 19) ^ (x >>> 10);
     }
 
-    private static int getS1(int x) {
+    private static int S1(int x) {
         return Integer.rotateRight(x, 6) ^ Integer.rotateRight(x, 11) ^ Integer.rotateRight(x, 25);
     }
 
-    private static int getch(int x, int y, int z) {
+    private static int ch(int x, int y, int z) {
         return (x & y) ^ ((~x) & z);
     }
 
-    private static int getS0(int x) {
+    private static int S0(int x) {
         return Integer.rotateRight(x, 2) ^ Integer.rotateRight(x, 13) ^ Integer.rotateRight(x, 22);
     }
 
-    private static int getmaj(int x, int y, int z) {
+    private static int maj(int x, int y, int z) {
         return (x & y) ^ (x & z) ^ (y & z);
     }
 }

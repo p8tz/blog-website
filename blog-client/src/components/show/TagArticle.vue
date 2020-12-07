@@ -38,7 +38,10 @@ export default {
       this.$http.get('/user/' + this.userId + '/tag/' + this.tagId)
         .then(response => {
           this.articleList = response.data.articleList
-          this.articleList.forEach(e => e.updateTime = e.updateTime.substring(0, 10))
+          this.articleList.forEach(e => {
+            if (e.updateTime === null) e.updateTime = e.createTime
+            e.updateTime = e.updateTime.substring(0, 10)
+          })
         })
     }
   },

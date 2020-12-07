@@ -56,7 +56,6 @@ public class SHA256Util {
             }
             sb.append(temp);
 
-
             // 效率低 1000万个输入差了50%
             // String low = Integer.toHexString(b & 0x0F);
             // String high = Integer.toHexString(b >>> 4 & 0x0F);

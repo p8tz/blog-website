@@ -1,5 +1,11 @@
 package cc.p8t.blog.entity;
 
+import cc.p8t.blog.validation.ArticleAdd;
+import cc.p8t.blog.validation.TagAdd;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -7,9 +13,13 @@ import java.util.List;
  * @date 2020/9/28 10:02
  */
 public class Tag {
+    @NotNull(groups = {ArticleAdd.class})
     private Integer id;
+
+    @NotBlank(groups = {TagAdd.class})
+    @Length(min = 1, max = 8, groups = {TagAdd.class})
     private String tagname;
-    
+
     private List<Article> articles;
     private User user;
 

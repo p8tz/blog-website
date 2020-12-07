@@ -86,14 +86,13 @@ export default {
         if (err) {
           return
         }
-
         this.$http.post('/admin/login', {
           'username': this.form.getFieldValue('username'),
           'password': this.form.getFieldValue('password')
         })
           .then(response => {
-            if (response.data.status === 200) {
-              window.sessionStorage.setItem('token', response.data.token)
+            if (response.data.code === 1000) {
+              window.sessionStorage.setItem('token', response.data.data.token)
               this.$router.push('/admin/index')
               this.$message.success('Login Successfully', 1)
             } else {

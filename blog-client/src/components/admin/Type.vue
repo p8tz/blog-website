@@ -4,7 +4,13 @@
       <a-table :columns="columns" :data-source="dataSource" bordered :pagination="pagination" rowKey="id">
         <template v-for="col in ['typename']" :slot="col" slot-scope="text, record, index">
           <div :key="col">
-            <a-input v-if="record.editable" style="margin: -5px 0" :value="text" v-model="typeName"/>
+            <a-input v-if="record.editable" style="margin: -5px 0" :value="text" v-model="typeName"
+                     v-decorator="['typename',
+                      {
+                        rules: validate.typename,
+                        initialValue: '',
+                        validateTrigger: 'blur'
+                      }]"/>
             <template v-else>
               {{ text }}
             </template>
@@ -66,7 +72,22 @@ export default {
       columns: columns,
       editingKey: '',
       pagination: pagination,
-      typeName: ''
+      typeName: '',
+      validate: {
+        typename: [
+          {
+            type: 'string',
+            required: true,
+            message: 'typename is required !'
+          },
+          {
+            type: 'string',
+            min: 1,
+            max: 8,
+            message: 'Length must between 1 and 8 !'
+          }
+        ],
+      }
     }
   },
   methods: {
@@ -88,10 +109,9 @@ export default {
         this.dataSource = newData
       }
       this.editingKey = ''
-
-      this.$http.put('/admin/type/' + id, { typename: this.typeName })
+      this.typeName = this.typeName.trim() === '' ? 'null' : this.typeName
+      this.$http.put('/admin/type/' + id, { typename: this.typeName.trim() })
       this.$message.success('Save successfully !', 1)
-
     },
     onDelete (id) {
       const _this = this
@@ -113,7 +133,12 @@ export default {
     getAllTypes: function () {
       this.$http.get('/admin/types')
         .then(response => {
-          this.dataSource = response.data.types
+          this.dataSource = response.data.data
+          this.dataSource.forEach((item, idx) => {
+            if (item.typename === 'default') {
+              this.dataSource.splice(idx, 1)
+            }
+          })
           this.resetIndex()
         })
     },

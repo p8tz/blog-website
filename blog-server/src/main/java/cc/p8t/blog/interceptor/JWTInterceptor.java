@@ -36,7 +36,8 @@ public class JWTInterceptor implements HandlerInterceptor {
         } catch (Exception e) {
             ret.put("msg", "token无效");
         }
-        ret.put("status", 404);
+        // ret.put("status", 404);
+        ret.put("code", 2002);
         String json = new ObjectMapper().writeValueAsString(ret);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(json);

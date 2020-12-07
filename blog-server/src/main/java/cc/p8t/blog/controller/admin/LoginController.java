@@ -1,6 +1,8 @@
 package cc.p8t.blog.controller.admin;
 
 import cc.p8t.blog.entity.User;
+import cc.p8t.blog.result.CodeInfo;
+import cc.p8t.blog.result.Result;
 import cc.p8t.blog.service.UserService;
 import cc.p8t.blog.utils.JWTUtil;
 import org.slf4j.Logger;
@@ -26,19 +28,21 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/login")
-    public Map<String, Object> checkUser(@RequestBody User user) {
+    public Result<Map<String, Object>> checkUser(@RequestBody User user) {
+        Result<Map<String, Object>> res = new Result<>();
         User u = userService.checkUser(user);
-        Map<String, Object> response = new HashMap<>();
         if (u != null) {
-            response.put("status", 200);
+            res.SetCodeInfo(CodeInfo.SUCCESS);
+            // 把用户信息写入payload, 获取加密后的token
             Map<String, String> info = new HashMap<>();
             info.put("userId", u.getId() + "");
             info.put("username", u.getUsername());
             String token = JWTUtil.getToken(info);
-            response.put("token", token);
+
+            res.setData(Map.of("token", token));
         } else {
-            response.put("status", 404);
+            res.SetCodeInfo(CodeInfo.AUTH_ERROR);
         }
-        return response;
+        return res;
     }
 }

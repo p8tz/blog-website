@@ -70,15 +70,7 @@ export default {
     }
   },
   methods: {
-    getAllArticles: function () {
-      this.$http.get('/admin/articles')
-        .then(response => {
-          this.dataSource = response.data.articles
 
-          //主键有断层, 所以额外增加序号列,
-          this.resetIndex()
-        })
-    },
     del: function (record) {
       const articleId = record.id
       const _this = this
@@ -98,11 +90,23 @@ export default {
         }
       })
     },
-    resetIndex: function() {
+    resetIndex: function () {
       let index = 1
       this.dataSource.forEach(item => item.index = index++)
     },
     update: function (record) {
+    },
+    getAllArticles: function () {
+      this.$http.get('/admin/articles')
+        .then(response => {
+          this.dataSource = response.data.data
+          this.dataSource.forEach(e => {
+            if (e.updateTime === null) e.updateTime = e.createTime
+            e.updateTime = e.updateTime.substring(0, 10)
+          })
+          // 主键有断层, 所以额外增加序号列,
+          this.resetIndex()
+        })
     }
   },
   watch: {

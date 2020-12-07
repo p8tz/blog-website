@@ -89,8 +89,8 @@ export default {
         this.dataSource = newData
       }
       this.editingKey = ''
-
-      this.$http.put('/admin/tag/' + id, { tagname: this.tagName })
+      this.tagName = this.tagName.trim() === '' ? 'null' : this.tagName
+      this.$http.put('/admin/tag/' + id, { tagname: this.tagName.trim() })
       this.$message.success('Save successfully !', 1)
 
     },
@@ -114,7 +114,12 @@ export default {
     getAllTags: function () {
       this.$http.get('/admin/tags')
         .then(response => {
-          this.dataSource = response.data.tags
+          this.dataSource = response.data.data
+          this.dataSource.forEach((item, idx) => {
+            if (item.tagname === 'default') {
+              this.dataSource.splice(idx, 1)
+            }
+          })
           this.resetIndex()
         })
     },

@@ -1,12 +1,17 @@
 package cc.p8t.blog.entity;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author jljxvg@foxmail.com
  * @date 2020/9/27 14:21
  */
 public class User {
     private Integer id;
+    @NotBlank
     private String username;
+
+    @NotBlank
     private String password;
 
     public User() {

@@ -1,5 +1,12 @@
 package cc.p8t.blog.entity;
 
+import cc.p8t.blog.validation.ArticleAdd;
+import cc.p8t.blog.validation.TagAdd;
+import cc.p8t.blog.validation.TypeAdd;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -7,7 +14,12 @@ import java.util.List;
  * @date 2020/9/28 10:00
  */
 public class Type {
+
+    @NotNull(groups = {ArticleAdd.class})
     private Integer id;
+
+    @NotBlank(groups = {TypeAdd.class})
+    @Length(min = 1, max = 8, groups = {TypeAdd.class})
     private String typename;
 
     private List<Article> articles;
