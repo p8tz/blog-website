@@ -18,9 +18,14 @@ public interface TypeMapper {
 
     int insertType(@Param("type") Type type);
 
-    int findById(@Param("typeId") Integer id);
+    Type findById(@Param("typeId") Integer id);
 
     int deleteById(@Param("typeId") Integer id);
 
     int updateById(@Param("type") Type type);
+
+    boolean existInArticle(@Param("typeId") Integer typeId);
+
+    Type findByName(@Param("userId")Integer userId,
+                    @Param("typeName") String typeName);
 }

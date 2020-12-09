@@ -13,9 +13,13 @@ public interface TagService {
 
     int insertTag(Tag tag);
 
-    int findById(Integer id);
+    Tag findById(Integer id);
 
     int deleteById(Integer id);
 
     int updateById(Tag tag);
+
+    boolean existInArticle(Integer tagId);
+
+    Tag findByName(Integer userId, String tagName);
 }

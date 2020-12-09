@@ -46,6 +46,7 @@ export default {
       this.$http.get('/user/' + this.userId + '/article/' + this.$route.params.articleId)
         .then(response => {
           this.article = response.data.article
+          if (this.article.updateTime === null) this.article.updateTime = this.article.createTime
           this.article.updateTime = this.article.updateTime.substring(0, 10)
         })
     }

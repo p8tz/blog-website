@@ -3,11 +3,11 @@
     <a-col :span="12" :offset="6">
       <a-form-model ref="ruleForm" :model="form" :rules="rules">
         <a-form-model-item ref="typeName" prop="typeName" style="margin-top: 30px;margin-bottom: 16px">
-          <a-input addon-before="Type: " v-model="form.typeName" placeholder="Input type name here"
+          <a-input addon-before="分类：" v-model="form.typeName" placeholder="请输入分类名"
                    @blur="() => $refs.typeName.onFieldBlur()"/>
         </a-form-model-item>
         <a-form-model-item style="float: right">
-          <a-button class="submit-btn" @click="onSubmit">Submit</a-button>
+          <a-button class="submit-btn" @click="onSubmit">添加</a-button>
         </a-form-model-item>
       </a-form-model>
     </a-col>
@@ -28,13 +28,13 @@ export default {
             type: 'string',
             required: true,
             whitespace: true,
-            message: 'typename is required !'
+            message: '请输入分类名！'
           },
           {
             type: 'string',
             min: 1,
             max: 8,
-            message: 'Length must between 1 and 8 !'
+            message: '长度在1到8之间！'
           }
         ],
       }
@@ -46,26 +46,28 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.$confirm({
-            title: 'Do you want to submit these items?',
-            content: 'When clicked the OK button, this dialog will be closed after 1 second',
+            title: '确定添加？',
+            content: '添加成功后可修改或删除该分类',
+            okText: '确认',
+            cancelText: '取消',
             onOk () {
               _this.$http.post('/admin/type', { typename: _this.form.typeName.trim() })
                 .then(response => {
-                  if (response.data.code === 2002) { // 参数校验错误
-                    alert('请正确填写表单信息')
+                  const code = response.data.code
+                  if (code === 2002) { // 参数校验错误
+                    _this.$message.warn('请正确填写表单信息')
+                  } else if(code === 2003) { // 重复添加
+                    _this.$message.warn('分类已存在')
                   } else {
-                    _this.$message.success('Submit successfully !', 1)
+                    _this.$message.success('成功添加新分类', 1)
                     _this.$router.push('/admin/type')
                   }
                 })
             },
             onCancel () {
-              _this.$message.info('You have cancelled submit !', 2)
+              _this.$message.info('已取消', 1)
             }
           })
-        } else {
-          console.log('error submit!!')
-          return false
         }
       })
     }

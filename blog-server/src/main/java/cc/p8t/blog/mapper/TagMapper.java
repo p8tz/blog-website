@@ -18,9 +18,14 @@ public interface TagMapper {
 
     int insertTag(@Param("tag") Tag tag);
 
-    int findById(@Param("tagId") Integer id);
+    Tag findById(@Param("tagId") Integer id);
 
     int deleteById(@Param("tagId") Integer id);
 
     int updateById(@Param("tag") Tag tag);
+
+    boolean existInArticle(@Param("tagId") Integer tagId);
+
+    Tag findByName(@Param("userId") Integer userId,
+                   @Param("tagName") String tagName);
 }

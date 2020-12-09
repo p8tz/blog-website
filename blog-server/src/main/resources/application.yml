@@ -18,7 +18,7 @@ spring:
 
       use-global-data-source-stat: true
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-      # 可视化监控, 从项目根目录下的/admin进入
+      # 可视化监控, 从/admin进入
       stat-view-servlet:
         enabled: true
         login-username: admin

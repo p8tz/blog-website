@@ -38,11 +38,17 @@ public class LoginController {
             info.put("userId", u.getId() + "");
             info.put("username", u.getUsername());
             String token = JWTUtil.getToken(info);
-
             res.setData(Map.of("token", token));
         } else {
             res.SetCodeInfo(CodeInfo.AUTH_ERROR);
         }
         return res;
+    }
+
+    @PostMapping("/register")
+    public Result<Object> register(@RequestBody User user) {
+        boolean b = userService.register(user);
+        if (!b) return new Result<>(CodeInfo.REPEAT_ADD_ERROR);
+        return new Result<>(CodeInfo.SUCCESS);
     }
 }

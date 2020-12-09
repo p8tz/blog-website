@@ -12,7 +12,7 @@
            style="margin-left:50%;transform:translate(-50%);font-size:20px;margin-bottom:20px;">
         <router-link :to="'/user/'+ userId + '/type/' + t.id" style="color: gray"
                      onmousemove="this.style.color='#74b9ff'" onmouseleave="this.style.color='gray'">
-          {{t.typename}}
+          {{ t.typename }}
         </router-link>
       </div>
     </div>

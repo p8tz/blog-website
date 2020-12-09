@@ -24,6 +24,8 @@ public class ShowTypeController {
     @GetMapping("/user/{userId}/types")
     public Map<String, Object> getTypeList(@PathVariable("userId") int id) {
         List<Type> types = typeService.findByUserId(id);
+        Type defTy = typeService.findById(100);
+        types.add(defTy);
         return Map.of("typeList", types);
     }
 }

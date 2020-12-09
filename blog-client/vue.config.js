@@ -5,5 +5,11 @@ module.exports = {
     port: 9998,
     open: true
   },
-  lintOnSave: false
+  lintOnSave: false,
+  // chainWebpack: config => {
+  //   config.plugin('provide').use(webpack.ProvidePlugin, [{
+  //     'window.Quill': 'quill/dist/quill.js',
+  //     'Quill': 'quill/dist/quill.js'
+  //   }])
+  // }
 }

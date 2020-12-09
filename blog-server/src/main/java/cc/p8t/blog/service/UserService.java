@@ -11,4 +11,6 @@ import java.util.List;
 public interface UserService {
     User checkUser(User user);
     List<User> findUserList();
+    User findByUsername(String username);
+    boolean register(User user);
 }

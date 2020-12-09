@@ -81,6 +81,7 @@
                  left join fk_article_tag on article.id = fk_article_tag.article_id
                  left join tag on fk_article_tag.tag_id = tag.id
         where article.type_id = #{typeId}
+          and article.user_id = #{userId}
     </select>
 
     <select id="findByTagId" resultMap="findByIdMap">
@@ -98,8 +99,8 @@
                  left join fk_article_tag on article.id = fk_article_tag.article_id
                  left join tag on fk_article_tag.tag_id = tag.id
         where tag_id = #{tagId}
+          and article.user_id = #{userId}
     </select>
-
 
     <insert id="insertArticle" useGeneratedKeys="true" keyProperty="id" parameterType="cc.p8t.blog.entity.Article">
         insert into article(title, content, create_time, type_id, user_id)

@@ -28,4 +28,17 @@ public class UserServiceImpl implements UserService {
     public List<User> findUserList() {
         return userMapper.findUserList();
     }
+
+    @Override
+    public User findByUsername(String username) {
+        return userMapper.findByUsername(username);
+    }
+
+    @Override
+    public boolean register(User user) {
+        User u = findByUsername(user.getUsername());
+        if (u != null) return false;
+        user.setPassword(SHA256Util.getDigest(user.getPassword()));
+        return userMapper.insertUser(user);
+    }
 }

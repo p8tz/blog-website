@@ -6,35 +6,34 @@
         <img src="../../assets/logo.png" alt="">
       </div>
       <!--    表单    -->
-      <a-form :form="form" :label-col="{ span: 7 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit"
+      <a-form :form="form" :label-col="{ span: 7 }" :wrapper-col="{ span: 12 }"
               class="login_form">
         <!--      账号      -->
         <a-form-item label="账号">
-          <a-input
-            v-decorator="['username',
+          <a-input v-decorator="['username',
                       {
                         rules: validate.username,
                         initialValue: 'polarnight',
                         validateTrigger: 'blur'
-                      }]"
-          />
+                      }]"/>
         </a-form-item>
         <!--      密码      -->
         <a-form-item label="密码">
-          <a-input
-            v-decorator="['password',
+          <a-input v-decorator="['password',
                       {
                         rules: validate.password,
                         initialValue: '123456',
                         validateTrigger: 'blur'
                       }]"
-            type="password"
-          />
+                   type="password"/>
         </a-form-item>
         <!--      提交      -->
-        <a-form-item :wrapper-col="{ span: 12, offset: 10 }">
-          <a-button type="primary" html-type="submit">
+        <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
+          <a-button type="primary" html-type="submit" @click="login">
             登录
+          </a-button>
+          <a-button type="primary" html-type="submit" @click="register" style="margin-left: 20px">
+            注册
           </a-button>
         </a-form-item>
       </a-form>
@@ -54,49 +53,63 @@ export default {
           {
             type: 'string',
             required: true,
-            message: 'username is required !'
+            message: '请填写用户名！'
           },
           {
             type: 'string',
-            min: 8,
+            min: 6,
             max: 16,
-            message: 'Length must between 8 and 16 !'
+            message: '长度在6到16位之间！'
           }
         ],
         password: [
           {
             type: 'string',
             required: true,
-            message: 'password is required !'
+            message: '请填写密码！'
           },
           {
             type: 'string',
             min: 6,
             max: 20,
-            message: 'Length must between 6 and 20 !'
+            message: '长度6到20位之间！'
           }
         ]
       }
     }
   },
   methods: {
-    handleSubmit (e) {
-      e.preventDefault()
+    login: function () {
       this.form.validateFields((err, values) => {
-        if (err) {
-          return
-        }
+        if (err) return
         this.$http.post('/admin/login', {
-          'username': this.form.getFieldValue('username'),
-          'password': this.form.getFieldValue('password')
+          username: this.form.getFieldValue('username'),
+          password: this.form.getFieldValue('password')
         })
           .then(response => {
             if (response.data.code === 1000) {
               window.sessionStorage.setItem('token', response.data.data.token)
               this.$router.push('/admin/index')
-              this.$message.success('Login Successfully', 1)
+              this.$message.success('成功登录', 1)
             } else {
-              this.$message.error('Incorrect Username or Password !', 1)
+              this.$message.error('用户名或密码错误', 1)
+            }
+          })
+      })
+    },
+    register: function () {
+      this.form.validateFields((err, values) => {
+        if (err) return
+        this.$http.post('/admin/register', {
+          username: this.form.getFieldValue('username').trim(),
+          password: this.form.getFieldValue('password').trim()
+        })
+          .then(response => {
+            const code = response.data.code
+            if (code === 2003) {
+              this.$message.error('用户名已存在', 1)
+            } else {
+              this.$message.info('注册成功', 1)
             }
           })
       })

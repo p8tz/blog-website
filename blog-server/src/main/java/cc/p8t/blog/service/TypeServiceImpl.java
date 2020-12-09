@@ -27,7 +27,7 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public int findById(Integer id) {
+    public Type findById(Integer id) {
         return typeMapper.findById(id);
     }
 
@@ -39,5 +39,15 @@ public class TypeServiceImpl implements TypeService {
     @Override
     public int updateById(Type type) {
         return typeMapper.updateById(type);
+    }
+
+    @Override
+    public boolean existInArticle(Integer typeId) {
+        return typeMapper.existInArticle(typeId);
+    }
+
+    @Override
+    public Type findByName(Integer userId, String typeName) {
+        return typeMapper.findByName(userId, typeName);
     }
 }

@@ -15,10 +15,26 @@
         where id = #{tagId}
     </select>
 
+    <select id="findByName" resultType="cc.p8t.blog.entity.Tag">
+        select id
+        from tag
+        where tagname = #{tagName}
+          and tag.user_id = #{userId}
+    </select>
+
     <insert id="insertTag">
         insert into tag(tagname, user_id)
         values (#{tag.tagname}, #{tag.user.id})
     </insert>
+
+    <select id="existInArticle" resultType="java.lang.Boolean">
+        select count(1)
+        from article,
+             fk_article_tag
+        where article.id = fk_article_tag.article_id
+          and fk_article_tag.tag_id = #{tagId}
+        limit 1
+    </select>
 
     <delete id="deleteById">
         delete

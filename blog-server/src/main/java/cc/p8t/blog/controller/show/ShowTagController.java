@@ -23,6 +23,8 @@ public class ShowTagController {
     @GetMapping("/user/{userId}/tags")
     public Map<String, Object> getTagList(@PathVariable("userId") int userId) {
         List<Tag> tags = tagService.findByUserId(userId);
+        Tag defTag = tagService.findById(100);
+        tags.add(defTag);
         return Map.of("tagList", tags);
     }
 }

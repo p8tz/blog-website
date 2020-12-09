@@ -1,7 +1,6 @@
 package cc.p8t.blog.entity;
 
 import cc.p8t.blog.validation.ArticleAdd;
-import cc.p8t.blog.validation.TagAdd;
 import cc.p8t.blog.validation.TypeAdd;
 import org.hibernate.validator.constraints.Length;
 

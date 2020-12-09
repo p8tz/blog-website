@@ -9,6 +9,7 @@ import cc.p8t.blog.utils.JWTUtil;
 import cc.p8t.blog.validation.TypeAdd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,16 +37,23 @@ public class TypeController {
     public Result<Object> getAllTypes(HttpServletRequest request) {
         String token = request.getHeader("token");
         List<Type> types = typeService.findByUserId(JWTUtil.getUserId(token));
+        Type defType = typeService.findById(100);
+        types.add(defType);
         return new Result<>(CodeInfo.SUCCESS, types);
     }
 
     @PostMapping("/type")
-    public Result<Object> insertType(@Validated(TypeAdd.class) @RequestBody Type type, BindingResult br, HttpServletRequest request) {
-        // 插入新type, type名称不能为空且长度限制为[1, 8]
+    public Result<Object> insertType(@Validated(TypeAdd.class) @RequestBody Type type,
+                                     BindingResult br, HttpServletRequest request) {
+        // 参数校验
         if (br.hasFieldErrors()) {
             return new Result<>(CodeInfo.VALIDATED_ERROR);
         }
+        // 名称查重
         Integer userId = JWTUtil.getUserId(request.getHeader("token"));
+        if (typeService.findByName(userId, type.getTypename()) != null || "default".equals(type.getTypename())) {
+            return new Result<>(CodeInfo.REPEAT_ADD_ERROR);
+        }
         type.setUser(new User(userId, "", ""));
         typeService.insertType(type);
         return new Result<>(CodeInfo.SUCCESS);
@@ -53,13 +61,23 @@ public class TypeController {
 
     @DeleteMapping("/type/{id}")
     public Result<Object> deleteType(@PathVariable("id") Integer typeId) {
+        // 防止恶意删除default分类 (如通过postman发送请求)
+        if (typeId.equals(100) || typeService.existInArticle(typeId)) {
+            return new Result<>(CodeInfo.VALIDATED_ERROR);
+        }
         typeService.deleteById(typeId);
         return new Result<>(CodeInfo.SUCCESS);
     }
 
     @PutMapping("/type/{id}")
     public Result<Object> updateType(@PathVariable("id") Integer typeId,
-                                          @RequestBody Type type) {
+                                     @RequestBody Type type, HttpServletRequest request) {
+        // 名称查重
+        Integer userId = JWTUtil.getUserId(request.getHeader("token"));
+        Type t = typeService.findByName(userId, type.getTypename());
+        if (t != null && !t.getId().equals(typeId) || "default".equals(type.getTypename())) {
+            return new Result<>(CodeInfo.REPEAT_ADD_ERROR);
+        }
         type.setId(typeId);
         typeService.updateById(type);
         return new Result<>(CodeInfo.SUCCESS);

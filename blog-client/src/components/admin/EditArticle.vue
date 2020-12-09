@@ -1,38 +1,19 @@
 <template>
   <div>
-
-    <!--<a-form-model-item ref="typeName" prop="typeName">-->
-    <!--  <a-input v-model="form.typeName"-->
-    <!--           @blur="() => $refs.typeName.onFieldBlur()"/>-->
-    <!--</a-form-model-item>-->
-    <!--<a-form-model-item style="float: right">-->
-    <!--  <a-button class="submit-btn" @click="onSubmit">Submit</a-button>-->
-    <!--</a-form-model-item>-->
-
-
     <a-row>
       <a-col :span="12" :offset="6">
-
         <a-form-model ref="ruleForm" :model="form" :rules="rules">
-
           <!-- 标题 -->
           <div class="title">
-
             <a-form-model-item ref="title" prop="title">
-
               <div style="margin-bottom: 16px">
-                <a-input addon-before="Title: " v-model="form.title"
-                         placeholder="Input your title here"
+                <a-input addon-before="标题：" v-model="form.title"
+                         placeholder="请输入标题"
                          @blur="() => $refs.title.onFieldBlur()"/>
               </div>
-
             </a-form-model-item>
-
           </div>
-
           <!-- 文章内容 -->
-
-
           <div class="content">
             <a-form-model-item ref="content" prop="content">
               <quill-editor ref="myQuillEditor" v-model="form.content"
@@ -40,13 +21,12 @@
                             @blur="() => $refs.content.onFieldBlur()"/>
             </a-form-model-item>
           </div>
-
           <div class="tat">
             <!-- 分类 -->
             <span class="type">
               <a-form-model-item ref="type" prop="type">
 
-                <a-select v-model="form.typeId" placeholder="Please select" style="width: 100%"
+                <a-select v-model="form.typeId" placeholder="请选择分类..." style="width: 100%"
                           @change="() => $refs.type.onFieldChange()">
                   <a-select-option :value="type.id" v-for="(type, key) in form.types"
                                    :key="type.id">
@@ -58,7 +38,7 @@
             <!-- 标签 -->
             <span class="tag">
               <a-form-model-item ref="tag" prop="tag">
-                <a-select mode="multiple" style="width: 100%" placeholder="Please select"
+                <a-select mode="multiple" style="width: 100%" placeholder="请选择标签..."
                           v-model="form.tagIds">
                   <a-select-option :value="tag.id" v-for="(tag, key) in form.tags"
                                    :key="tag.id">
@@ -96,13 +76,13 @@ export default {
             type: 'string',
             whitespace: true,
             required: true,
-            message: 'title is required !'
+            message: '请输入标题！'
           },
           {
             type: 'string',
             min: 1,
             max: 20,
-            message: 'Length must between 1 and 20 !'
+            message: '长度在1到20之间！'
           }
         ],
         content: [
@@ -110,13 +90,11 @@ export default {
             type: 'string',
             whitespace: true,
             required: true,
-            message: 'content is required !'
+            message: '请输入文章内容！'
           },
         ]
       },
-
       editorOption: {
-        // Some Quill options...
       }
     }
   },
@@ -126,8 +104,10 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.$confirm({
-            title: 'Do you want to sumbit these items?',
-            content: 'When clicked the OK button, this dialog will be closed after 1 second',
+            title: '确定发布？',
+            content: '发布成功后可修改或删除该文章',
+            okText: '确认',
+            cancelText: '取消',
             onOk () {
               const tagObjArr = []
               _this.form.tagIds.forEach(item => tagObjArr.push({ id: item }))
@@ -135,14 +115,14 @@ export default {
               const typeObj = {}
               typeObj.id = _this.form.typeId
               if (typeObj.id.length === 0) typeObj.id = 100 // default
-              if (_this.$route.params.id === '-1') { // 添加博客
+              if (_this.$route.params.id === '-1') { // 发布博客
                 _this.postArticle(typeObj, tagObjArr)
               } else {  // 更新博客
                 _this.putArticle(typeObj, tagObjArr)
               }
             },
             onCancel () {
-              _this.$message.info('You have cancelled submit !', 2)
+              _this.$message.info('取消发布', 2)
             }
           })
         }
@@ -158,10 +138,10 @@ export default {
       })
         .then(response => {
           if (response.data.code === 2002) {
-            alert('请正确填写博客信息')
+            this.$message.warn('请正确填写博客信息！')
           } else {
             this.$router.push('/admin/article')
-            this.$message.success('Submit successfully !', 1)
+            this.$message.success('发布成功', 1)
           }
         })
     },
@@ -175,10 +155,10 @@ export default {
       })
         .then(response => {
           if (response.data.code === 2002) {
-            alert('请正确填写博客信息')
+            this.$message.warn('请正确填写博客信息！')
           } else {
             this.$router.push('/admin/article')
-            this.$message.success('Submit successfully !', 1)
+            this.$message.success('更新成功', 1)
           }
         })
     },

@@ -38,14 +38,14 @@ public class ShowArticleController {
     @GetMapping("/user/{userId}/type/{typeId}")
     public Map<String, Object> getArticleByType(@PathVariable("userId") int userId,
                                                 @PathVariable("typeId") int typeId) {
-        List<Article> articles = articleService.findByTypeId(typeId);
+        List<Article> articles = articleService.findByTypeId(userId, typeId);
         return Map.of("articleList", articles);
     }
 
     @GetMapping("/user/{userId}/tag/{tagId}")
     public Map<String, Object> getArticleByTag(@PathVariable("userId") int userId,
                                                @PathVariable("tagId") int tagId) {
-        List<Article> articles = articleService.findByTagId(tagId);
+        List<Article> articles = articleService.findByTagId(userId, tagId);
         return Map.of("articleList", articles);
     }
 }

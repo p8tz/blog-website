@@ -6,21 +6,21 @@
         <a-layout-header :style="{ background: '#fcfcfc' }">
           <!-- username -->
           <span style="position: absolute; left: 20%; font-size: 17px">
-            <h1> Hi!&nbsp;{{ username }}</h1>
+            <h1>ADMIN</h1>
           </span>
           <a-menu v-model="current" mode="horizontal" style="background-color: #fcfcfc">
             <!-- 各个分类 -->
             <a-menu-item v-bind:key="item.key" v-for="item in menuItems">
               <a-icon :type="item.type"/>
               <router-link :to="item.to" style="float: right">
-                {{ item.key }}
+                {{ item.value }}
               </router-link>
             </a-menu-item>
             <!-- 退出 -->
             <a-menu-item key="logout" @click="logout">
               <a-icon type="logout"/>
               <router-link to="/admin/logout" style="float: right">
-                Logout
+                注销
               </router-link>
             </a-menu-item>
           </a-menu>
@@ -59,25 +59,28 @@ export default {
         {
           key: 'home',
           type: 'home',
-          to: '/admin/home'
+          to: '/admin/home',
+          value: '首页'
         },
         {
           key: 'article',
           type: 'book',
-          to: '/admin/article'
+          to: '/admin/article',
+          value: '文章'
         },
         {
           key: 'type',
           type: 'folder',
-          to: '/admin/type'
+          to: '/admin/type',
+          value: '分类'
         },
         {
           key: 'tag',
           type: 'tags',
-          to: '/admin/tag'
+          to: '/admin/tag',
+          value: '标签'
         }
       ],
-      username: 'Polarnight'
     }
   },
   methods: {

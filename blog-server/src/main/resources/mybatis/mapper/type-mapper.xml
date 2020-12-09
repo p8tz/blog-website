@@ -15,6 +15,20 @@
         where id = #{typeId}
     </select>
 
+    <select id="existInArticle" resultType="java.lang.Boolean">
+        select count(1)
+        from article
+        where article.type_id = #{typeId}
+        limit 1
+    </select>
+
+    <select id="findByName" resultType="cc.p8t.blog.entity.Type">
+        select id
+        from type
+        where typename = #{typeName}
+          and type.user_id = #{userId}
+    </select>
+
     <insert id="insertType">
         insert into type(typename, user_id)
         values (#{type.typename}, #{type.user.id})

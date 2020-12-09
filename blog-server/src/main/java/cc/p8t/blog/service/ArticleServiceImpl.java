@@ -62,12 +62,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> findByTypeId(Integer typeId) {
-        return articleMapper.findByTypeId(typeId);
+    public List<Article> findByTypeId(Integer userId, Integer typeId) {
+        return articleMapper.findByTypeId(userId, typeId);
     }
 
     @Override
-    public List<Article> findByTagId(Integer tagId) {
-        return articleMapper.findByTagId(tagId);
+    public List<Article> findByTagId(Integer userId, Integer tagId) {
+        return articleMapper.findByTagId(userId, tagId);
     }
 }

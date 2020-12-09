@@ -13,7 +13,7 @@
         <div style="height: 100px"></div>
         <div v-for="a in articleList"
              style="margin-left:50%;transform:translate(-50%);font-size:20px;margin-bottom:20px;">
-          <router-link :to="'/user/'+ userId +'/' + a.id" style="color: gray"
+          <router-link :to="'/user/'+ userId +'/article/' + a.id" style="color: gray"
                        onmousemove="this.style.color='#74b9ff'" onmouseleave="this.style.color='gray'">
             {{a.title +'&nbsp;'+a.updateTime}}
           </router-link>

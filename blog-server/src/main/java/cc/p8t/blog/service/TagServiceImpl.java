@@ -15,6 +15,7 @@ import java.util.List;
 public class TagServiceImpl implements TagService {
     @Autowired
     private TagMapper tagMapper;
+
     @Override
     public List<Tag> findByUserId(Integer id) {
         return tagMapper.findByUserId(id);
@@ -26,7 +27,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public int findById(Integer id) {
+    public Tag findById(Integer id) {
         return tagMapper.findById(id);
     }
 
@@ -38,5 +39,15 @@ public class TagServiceImpl implements TagService {
     @Override
     public int updateById(Tag tag) {
         return tagMapper.updateById(tag);
+    }
+
+    @Override
+    public boolean existInArticle(Integer tagId) {
+        return tagMapper.existInArticle(tagId);
+    }
+
+    @Override
+    public Tag findByName(Integer userId, String tagName) {
+        return tagMapper.findByName(userId, tagName);
     }
 }

@@ -13,9 +13,13 @@ public interface TypeService {
 
     int insertType(Type type);
 
-    int findById(Integer id);
+    Type findById(Integer id);
 
     int deleteById(Integer id);
 
     int updateById(Type type);
+
+    boolean existInArticle(Integer typeId);
+
+    Type findByName(Integer userId, String typeName);
 }

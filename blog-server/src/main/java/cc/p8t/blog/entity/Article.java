@@ -1,13 +1,12 @@
 package cc.p8t.blog.entity;
 
 import cc.p8t.blog.validation.ArticleAdd;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.PastOrPresent;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +20,9 @@ public class Article {
     private String title;
     @NotBlank(groups = ArticleAdd.class)
     private String content;
-    @Past(groups = ArticleAdd.class)
+    @PastOrPresent(groups = ArticleAdd.class)
     private Date createTime;
-    @Past(groups = ArticleAdd.class)
+    @PastOrPresent(groups = ArticleAdd.class)
     private Date updateTime;
     private User user;
     @NotNull(groups = ArticleAdd.class)

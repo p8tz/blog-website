@@ -111,22 +111,37 @@ export default {
       this.editingKey = ''
       this.typeName = this.typeName.trim() === '' ? 'null' : this.typeName
       this.$http.put('/admin/type/' + id, { typename: this.typeName.trim() })
-      this.$message.success('Save successfully !', 1)
+        .then(response => {
+          const code = response.data.code
+          if (code === 2003) {
+            this.$message.warn('分类已存在')
+          } else {
+            this.$message.success('Save successfully !', 1)
+          }
+        })
     },
     onDelete (id) {
       const _this = this
       this.$confirm({
-        title: 'Do you want to delete these items?',
-        content: 'When clicked the OK button, this dialog will be closed after 1 second',
+        title: '确认删除？',
+        content: '删除后无法找回',
+        okText: '确认',
+        cancelText: '取消',
         onOk () {
           _this.$http.delete('/admin/type/' + id)
-          const ds = [..._this.dataSource]
-          _this.dataSource = ds.filter(item => item.id !== id)
-          _this.resetIndex()
-          _this.$message.success('Delete successfully !', 1)
+            .then(response => {
+              if (response.data.code === 1000) {
+                const ds = [..._this.dataSource]
+                _this.dataSource = ds.filter(item => item.id !== id)
+                _this.resetIndex()
+                _this.$message.info('成功删除', 1)
+              } else {
+                this.$message.error('请先删除与之关联的文章')
+              }
+            })
         },
         onCancel () {
-          _this.$message.info('You have cancelled deletion !', 1)
+          _this.$message.info('取消删除', 1)
         }
       })
     },

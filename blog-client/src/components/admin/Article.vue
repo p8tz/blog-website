@@ -9,7 +9,6 @@
           <a-divider type="vertical"/>
           <a @click="del(record)">删除</a>
         </span>
-
         <template slot="footer" slot-scope="currentPageData">
           <a-button>
             <!-- id为-1代表新增 -->
@@ -70,23 +69,24 @@ export default {
     }
   },
   methods: {
-
     del: function (record) {
       const articleId = record.id
       const _this = this
       this.$confirm({
-        title: 'Do you want to delete these items?',
-        content: 'When clicked the OK button, this dialog will be closed after 1 second',
+        title: '确认删除？',
+        content: '删除后无法找回',
+        okText: '确认',
+        cancelText: '取消',
         onOk () {
           _this.$http.delete('/admin/article/' + articleId)
           const ds = [..._this.dataSource]
           _this.dataSource = ds.filter(item => item.id !== record.id)
-
           let index = 1
           _this.resetIndex()
+          _this.$message.info('成功删除', 1)
         },
         onCancel () {
-          _this.$message.info('You have cancelled deletion !', 1)
+          _this.$message.info('取消删除', 1)
         }
       })
     },

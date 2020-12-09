@@ -24,7 +24,6 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   // 如果token失效则重定向到login页面
   if (response.data.code === 2001) {
-    console.log('token失效')
     router.push('/admin/login')
   }
   return response

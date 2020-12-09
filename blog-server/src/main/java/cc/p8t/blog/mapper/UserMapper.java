@@ -19,4 +19,8 @@ public interface UserMapper {
     User findById(@Param("id") Integer id);
 
     List<User> findUserList();
+
+    boolean insertUser(@Param("user")User user);
+
+    User findByUsername(@Param("username") String username);
 }
